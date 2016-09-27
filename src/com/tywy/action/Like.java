@@ -38,7 +38,7 @@ public class Like extends ActionSupport {
 		
 		String sqlString=null;
 		sqlString=	"update historical set islike="+like+", hate="+hate+" where openid='"+config.openid+ "' and goodsid='"+id+"'";
-	System.out.println(sqlString);
+	    System.out.println(sqlString);
 		try{
 			Connection con;
 			Statement sql;
@@ -49,26 +49,13 @@ public class Like extends ActionSupport {
 		String s="{\"status\": 200}";	
 		PrintWriter out = response.getWriter();
 		out.write(s);
-			return null;
+		return null;
 		
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 			return null;
-		
-//		result="success";//���ɹ�
-//		//result="wrong";
-//		
-//		response.setCharacterEncoding("UTF-8");
-//		response.setContentType("text/html;charset=UTF-8");
-//		
-//			try {
-//				PrintWriter out = response.getWriter();
-//				out.write(result);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
 		
 	}
 

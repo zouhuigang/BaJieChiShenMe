@@ -45,6 +45,12 @@
 		<action name="setting" class="com.tywy.action.SettingAction">
 		 <result name="input">/jsp/setting.jsp </result>  
 		 </action>
+		 
+		<!--  商品模板 -->
+		<action name="getgoods" class="com.tywy.action.GetGoods">
+		 <result name="message">/jsp/message.jsp </result> 
+		</action> 
+		<!--  商品模板 -->
 
 	</package> 
 	
