@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.multipart.maxSize" value="52428800"/>
+	
+	
+	<package name="default" namespace="/" extends="struts-default">
+		<action name="savedate" class="com.tywy.action.SettingAction" method="savedate">
+		</action>
+		
+		<action name="feedback" class="com.tywy.action.FeedBackAction" method="feedback">
+		</action>
+		<action name="Like" class="com.tywy.action.Like" method="like">
+		</action>
+		<action name="settingupdate" class="com.tywy.action.SettingUpdateAction" method="settingupdate">
+		</action>
+		<action name="GetHistorical" class="com.tywy.action.Like" method="GetHistorical">
+		</action>
+		<action name="getdate" class="com.tywy.action.GetDateAction" method="getdate">
+		</action>
+		
+		<action name="about" class="com.tywy.action.AboutAction" method="about">
+		</action>
+		<action name="savetime" class="com.tywy.action.SaveTime">
+		<result name="success">/jsp/setting.jsp</result>
+		<result name="error"> /jsp/setting.jsp </result>
+		</action>
+		<action name="saveaddtime" class="com.tywy.action.SaveAddTime" method="saveaddtime">
+		<result name="success">/jsp/settingtime.jsp</result>
+		</action>
+		
+		<!-- 登录模块 -->
+		 <action name="login" class="com.tywy.action.LoginAction">
+		 <result name="success" type="redirect">/index.jsp </result> 
+		 <result name="input">/login.jsp </result> 
+		 <result name="error">/login.jsp </result> 
+		 </action> 
+		<!-- 登录模块 -->
+		
+		<action name="setting" class="com.tywy.action.SettingAction">
+		 <result name="input">/jsp/setting.jsp </result>  
+		 </action>
+
+	</package> 
+	
+	
+
+</struts>

@@ -1,0 +1,70 @@
+@CHARSET "UTF-8";
+html, body, span, div, p, a, table, tbody,th, h1, h2, h3, h4, h5, h6, img, form, font, strong, b, i, dl, dt, dd, ol, ul, li, dl, dd, dt, iframe, label, blockquote, input, button {padding:0; margin:0;list-style: none;border:0;}
+fieldset, legend, textarea, blockquote,object{margin:0px; padding:0px;border:0;}
+body {line-height:22px;font-size:12px;font-family:arial,"\5FAE\8F6F\96C5\9ED1";color:#000000;background:#fff repeat-x 0 0;-webkit-text-size-adjust:none;}
+img {vertical-align:middle; border:none;}
+h1,h2,h3,h4,h5,h6 { font-weight: normal; font-size: 100%; }
+table { border-collapse: collapse; border-spacing: 0; } 
+a {color:#000000;text-decoration:none;outline:none;blr:expression(this.onFocus=this.blur());}
+a:hover, a:active, a:focus {color:#0a710a;}
+input,textarea,select,button{outline:none;resize:none;vertical-align:middle;font:12px/1.5 Microsoft YaHei,"微软雅黑",Lucida,Verdana,Hiragino Sans GB,STHeiti,WenQuanYi Micro Hei,Droid Sans Fallback,SimSun,sans-serif;/*font:12px/1.5 Arial,Verdana,"\5b8b\4f53","\5FAE\8F6F\96C5\9ED1"*/}
+textarea{resize:none}
+.left{float:left}
+.right{float:right}
+/* ------------网页初始化结束------- */
+
+/*------------定义基本样式------------*/
+	.right{float:right}
+	.left{float:left}
+	.clear{ clear:both; height:auto} 
+	.zoom{zoom:1}
+	.oh{overflow:hidden}
+	.cursor{cursor:pointer}
+	.hidden{display:none}
+
+/*-------------清除浮动影响--------------*/
+.clearfix:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: ".";
+	clear: both;
+	height: 0;
+}
+/*----------------IE6---------------------*/
+* html .clearfix {
+	zoom: 1;
+}  
+/*-------------"*:first-child + html"这个选择符只有IE7才能识别--------------*/
+*:first-child + html .clearfix {
+	zoom: 1;
+}
+
+
+
+/*--------------------网页初始化定义结束----------------------------*/
+
+/*扩展功能*/
+/* basic */
+.f_l {float:left;}
+.f_r {float:right;}
+.t_l {text-align:left;}
+.t_r {text-align:right;}
+.t_c {text-align:center;}
+.f_b {font-weight:bold;}
+.f_n {font-weight:normal;}
+.f_white {color:white;}
+.f_gray {color:#666666;}
+.f_orange {color:#FF6600;}
+.f_red {color:red;}
+.f_green {color:green;}
+.f_blue {color:blue;}
+.f_dblue {color:#333333;}
+.f_price {font-weight:bold;font-family:Arial;color:#FF0000;}
+.px10 {font-size:10px;}
+.px11 {font-size:11px;}
+.px12 {font-size:12px;}
+.px13 {font-size:13px;}
+.px14 {font-size:14px;}
+.px15 {font-size:15px;}
+.px16 {font-size:16px;}
