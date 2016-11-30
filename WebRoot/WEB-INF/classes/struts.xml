@@ -51,6 +51,14 @@
 		 <result name="message">/jsp/message.jsp </result> 
 		</action> 
 		<!--  商品模板 -->
+		
+		<!--  翻盘-->
+		<action name="fanpai" class="com.tywy.action.FanPai" method="FanPaiSubmit">	
+		</action> 
+		<action name="fpai" class="com.tywy.action.FanPai" method="execute">
+			<result name="message">/jsp/fanpai.jsp </result> 
+		</action> 
+		<!--  翻盘 -->
 
 	</package> 
 	
