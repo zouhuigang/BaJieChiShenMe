@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -32,8 +34,8 @@ public class FanPai extends ActionSupport{
 		
 		HttpServletRequest request = ServletActionContext.getRequest();//传参数出去
 		ServletContext servletContext = ServletActionContext.getServletContext();//传参数出去
-		int synum=getUserCount();
-		request.setAttribute("synum", synum);
+		Map map=getUserCount();
+		request.setAttribute("synum", map.get("number"));
 		con.close();
 		return "message";
 	}
@@ -49,8 +51,8 @@ public class FanPai extends ActionSupport{
 		response.setContentType("text/html;charset=UTF-8");
 		JSONObject jo = new JSONObject();
 		JSONObject jo1 = new JSONObject();
-		int sysnum=getUserCount();
-		
+		Map map=getUserCount();
+		int sysnum =(Integer) map.get("number");
 		if(sysnum<=0){
 			jo.put("status","500");
 			jo.put("info","机会已用完");
@@ -64,19 +66,44 @@ public class FanPai extends ActionSupport{
 		jo.put("status","200");
 		jo.put("info","成功");
 		
-		FanpaiBean bean =randm_goods();//随机商品
-		int goodid=bean.getGoodsid();
-		String saveID =getsetting(goodid);//得到当前用户的设置
+		String[] si =(String[]) map.get("saveid"); //得到已经保存在数据库中的goodsid
+		
+		//从4个商品取出排除自己已推荐的商品
+		int listg=0;
+		List<FanpaiBean> list =randm_goods();//取出4个随机商品
+		for (int i = 0; i < list.size(); i++) {
+			//System.out.println(list.get(i));
+			boolean b=false;
+			int goodid=list.get(i).getGoodsid();
+			
+			for(int a=0;a<si.length;a++){
+				int ss=Integer.parseInt(si[a]);
+				if(goodid!=ss){
+					b=true;
+					listg=i;
+					break;
+				}
+				
+			}
+			
+			if(b){
+				break;
+			}
+			
+			
+		}
+
+		String saveID =getsetting(list.get(listg).getGoodsid());//保存最新的id当前用户的设置
 		UpateSetting(saveID);
 		
 		
 		//入json中
 		
-		jo1.put("name",bean.getGoodsname());
+		jo1.put("name",list.get(listg).getGoodsname());
 		jo1.put("runcode",1);
-		jo1.put("imgurl",bean.getImageurl());
-		jo1.put("price",bean.getPrice());
-		jo1.put("location",bean.getLocation());
+		jo1.put("imgurl",list.get(listg).getImageurl());
+		jo1.put("price",list.get(listg).getPrice());
+		jo1.put("location",list.get(listg).getLocation());
 		jo1.put("imgurl1","");
 		jo1.put("adtitle","");
 		jo1.put("adurl","");
@@ -107,25 +134,17 @@ public class FanPai extends ActionSupport{
 	
 	
 	
-	//随机商品
-	private FanpaiBean randm_goods(){
-		
-		String sqlString=null;
-		String openid =config.openid; 
-		
-		JSONObject jo = new JSONObject();
-		jo.put("status","200");
-		jo.put("info","成功");
-		JSONObject jo1 = new JSONObject();
-		FanpaiBean bean=new FanpaiBean();
-		
+	//list随机商品
+	private List<FanpaiBean> randm_goods(){
+	
+		List<FanpaiBean> list = new ArrayList<FanpaiBean>();
 		try{
 			 con = ConnSQL.getConnection();
 			 sm = con.createStatement();
-			ResultSet rs = sm.executeQuery("select * from goods where 1=1  ORDER BY rand() LIMIT 1");			
+			ResultSet rs = sm.executeQuery("select * from goods where 1=1  ORDER BY rand() LIMIT 4");			
 			
 			if(rs.next()){	
-				
+				FanpaiBean bean=new FanpaiBean();
 				try{ 
 					bean.setGoodsid(rs.getInt("goodsid"));
 					bean.setGoodsname(rs.getString("goodsname"));
@@ -135,7 +154,7 @@ public class FanPai extends ActionSupport{
 					bean.setPrice(rs.getString("price"));
 					bean.setUrl(rs.getString("url"));
 					
-					
+					list.add(bean);
 					
 					
 
@@ -144,17 +163,13 @@ public class FanPai extends ActionSupport{
 				}
 			}
 			
-		//	jo.put("data", jo1);
-		 //   String json=JSONObject.toJSONString(jo,SerializerFeature.SortField);
-		//	PrintWriter out = response.getWriter();
-		//	out.write(json);
 		}catch (Exception ex) {  
 			ex.printStackTrace();  
 			
 		} 
 		
 		
-		return bean;
+		return list;
 	}
 	
 //查询用户设置
@@ -205,10 +220,13 @@ public class FanPai extends ActionSupport{
 	}
 	
 	//核对用户次数
-	private int getUserCount(){
+	private Map getUserCount(){
+		
+		Map map=new HashMap<Object, Object>();
 		int number=0;
 		//查询当前用户信息
 		String sqlString=null;
+		String[] si = {};
 		sqlString="select * from setting where openid ='"+config.openid+"'";
 		try{
 			con=ConnSQL.getConnection();
@@ -218,7 +236,7 @@ public class FanPai extends ActionSupport{
 			while(rs.next()){
 					String saveid=	rs.getString("SavedID");
 					int total=	rs.getInt("u_click_count");
-					String[] si = {};
+					
 					if(saveid==null||"".equals(saveid)){
 						//si="";
 					}else{
@@ -234,18 +252,18 @@ public class FanPai extends ActionSupport{
 					//System.out.println(si.toString());
 			}
 			//con.close();
-			
-			
+			map.put("number", number);
+			map.put("saveid", si);
 			
 			//request.getSession().setAttribute("ses", "会话范围属性");
 			//servletContext.setAttribute("app", "应用范围属性");
 			//request.setAttribute("list1",list);
-			return number;
+			return map;
 			
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}
-		return 0;
+		return null;
 	}
 	
 	

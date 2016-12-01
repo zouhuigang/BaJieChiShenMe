@@ -1,3 +1,8 @@
+/*
+ * 光标放在class内：
+ * 快捷键： shift + alt + s
+ * 再按 r
+ * */
 package com.tywy.bean;
 
 import java.io.Serializable;
